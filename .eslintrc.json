@@ -1,0 +1,37 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "mocha": true
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "react"
+  ],
+  "extends": [
+    "standard",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "max-len": [
+      "error",
+      {
+        "code": 120
+      }
+    ],
+    "object-curly-newline": [
+      "error",
+      {
+        "minProperties": 2
+      }
+    ],
+    "prefer-arrow-callback": "error",
+    "sort-imports": "error",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-uses-react": "error",
+    "@typescript-eslint/indent": [
+      "error",
+      2
+    ],
+    "@typescript-eslint/no-explicit-any": "off"
+  }
+}
