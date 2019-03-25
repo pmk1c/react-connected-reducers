@@ -1,6 +1,6 @@
 import { Namespace } from '.'
 
-export type RevisionBumper = () => void
+type RevisionBumper = () => void
 
 interface RevisionBumpers {
   [key: string]: RevisionBumper[];
