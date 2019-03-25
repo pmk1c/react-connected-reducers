@@ -1,7 +1,7 @@
 {
   "name": "react-connected-reducers",
   "description": "Extends the Reducer React Hook to allow for components to share their reducer state with each other.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "main": "dist/index.js",
   "scripts": {
     "build": "node_modules/.bin/tsc",
