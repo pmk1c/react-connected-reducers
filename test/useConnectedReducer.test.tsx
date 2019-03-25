@@ -4,12 +4,14 @@ import React, {
 } from 'react'
 import ReactTestRenderer from 'react-test-renderer'
 import { expect } from 'chai'
-import { resetDispatchers } from '../src/dispatchers'
+import { resetBumpers } from '../src/revisionBumpers'
+import { resetStates } from '../src/states'
 import { useConnectedReducer } from '../src'
 
 describe('useConnectedReducer', () => {
   afterEach(() => {
-    resetDispatchers()
+    resetBumpers()
+    resetStates()
   })
 
   describe('single component', () => {
@@ -50,6 +52,40 @@ describe('useConnectedReducer', () => {
 
   describe('multiple components', () => {
     it('updates all connected components when dispatching an action', () => {
+      const useMyReducer = (): [string, (action: string) => void] => useConnectedReducer(
+        'reducer',
+        (state: string, action: string): string => {
+          return action === 'action' ? 'newState' : state
+        },
+        'state'
+      )
+      function ComponentA (): ReactElement {
+        const [state] = useMyReducer()
+        return <>{state}</>
+      }
+      function ComponentB (): ReactElement {
+        const [state, dispatch] = useMyReducer()
+        useEffect(() => {
+          dispatch('action')
+        })
+        return <>{state}</>
+      }
+      const app = (
+        <>
+          <ComponentA />
+          <ComponentB />
+        </>
+      )
+      const renderer = ReactTestRenderer.create(app)
+
+      expect(renderer.toJSON()).to.eql(['state', 'state'])
+
+      renderer.update(app)
+
+      expect(renderer.toJSON()).to.eql(['newState', 'newState'])
+    })
+
+    it('updates all connected components when dispatching an action and dispatch happens before mount', () => {
       const useMyReducer = (): [string, (action: string) => void] => useConnectedReducer(
         'reducer',
         (state: string, action: string): string => {
