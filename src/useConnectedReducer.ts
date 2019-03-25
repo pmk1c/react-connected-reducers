@@ -9,7 +9,7 @@ import {
 } from 'react'
 import {
   addBumper,
-  hasRevisionBumper,
+  hasBumper,
   removeBumper
 } from './revisionBumpers'
 import {
@@ -29,7 +29,7 @@ function useRevisionBumper (namespace: Namespace): void {
   const [revision, setRevision] = useState(0)
   const revisionBumper = (): void => setRevision(revision + 1)
 
-  if (!hasRevisionBumper(namespace, revisionBumper)) {
+  if (!hasBumper(namespace, revisionBumper)) {
     addBumper(namespace, revisionBumper)
   }
   useEffect(() => {

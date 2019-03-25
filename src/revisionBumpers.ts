@@ -26,7 +26,7 @@ export function removeBumper (namespace: Namespace, bump: RevisionBumper): void 
   setNamespaceBumpers(namespace, namespaceBumpers.filter(b => b !== bump))
 }
 
-export function hasRevisionBumper (namespace: Namespace, bumper: RevisionBumper): boolean {
+export function hasBumper (namespace: Namespace, bumper: RevisionBumper): boolean {
   return getNamespaceBumpers(namespace).includes(bumper)
 }
 
