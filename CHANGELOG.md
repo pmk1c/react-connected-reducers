@@ -10,5 +10,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `useConnectedReducer` – A React Hook to share state between components
 
-[Unreleased]: https://github.com/olivierlacan/keep-a-changelog/compare/v0.1.1...HEAD
-[0.1.1]: https://github.com/olivierlacan/keep-a-changelog/releases/tag/v0.1.1
+[Unreleased]: https://github.com/pmk1c/react-connected-reducers/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/pmk1c/react-connected-reducers/releases/tag/v0.1.1
