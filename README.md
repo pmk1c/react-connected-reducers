@@ -126,11 +126,3 @@ That's all. Your are now ready to connect your components at ease!
 
 - `state : state` – The current state of the reducer.
 - `dispatch : action => void` – Use this function to run an action through this reducer.
-
-# Known Issues
-
-As stated above, this is currently just an experiment. The main issue with the current implementation is:
-
-**The state is memoized for each component, that uses a connected reducer.**
-
-This leads to a really small codebase, but also to multiplicated memory usage.
