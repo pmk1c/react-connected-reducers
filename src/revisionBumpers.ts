@@ -29,3 +29,13 @@ export function removeBumper (namespace: Namespace, bump: RevisionBumper): void 
 export function bumpNamespace (namespace: Namespace): void {
   getNamespaceBumpers(namespace).forEach((bump: RevisionBumper) => bump())
 }
+
+// NOTE: These are only used for testing.
+
+export function __getRevisionBumpers (): RevisionBumpers {
+  return revisionBumpers
+}
+
+export function __resetRevisionBumpers (): void {
+  Object.keys(revisionBumpers).forEach(k => delete revisionBumpers[k])
+}

@@ -38,8 +38,11 @@ export default function useConnectedReducer (
 
   const state = connectedContext.getNamespaceState(namespace, initialState)
   const dispatch: Dispatch<any> = (action): void => {
-    connectedContext.setNamespaceState(namespace, reducer(state, action))
-    bumpNamespace(namespace)
+    const newState = reducer(state, action)
+    if (state !== newState) {
+      connectedContext.setNamespaceState(namespace, newState)
+      bumpNamespace(namespace)
+    }
   }
 
   return [state, dispatch]
