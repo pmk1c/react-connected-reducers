@@ -33,3 +33,10 @@ jobs:
     steps:
       - install
       - run: npm test
+
+workflows:
+  version: 2
+  lint_and_test:
+    jobs:
+      - lint
+      - test
