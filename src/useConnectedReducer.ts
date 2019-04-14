@@ -1,6 +1,8 @@
 import {
   Dispatch,
   Reducer,
+  ReducerAction,
+  ReducerState,
   useCallback,
   useContext,
   useEffect,
@@ -15,11 +17,11 @@ import {
 import { ConnectedContext } from './ConnectedProvider'
 import { Namespace } from '.'
 
-export default function useConnectedReducer (
+export default function useConnectedReducer<R extends Reducer<any, any>> (
   namespace: Namespace,
-  reducer: Reducer<any, any>,
-  initialState: any
-): [any, Dispatch<any>] {
+  reducer: R,
+  initialState: ReducerState<R>
+): [ReducerState<R>, Dispatch<ReducerAction<R>>] {
   const connectedContext = useContext(ConnectedContext)
 
   if (!connectedContext) {
@@ -37,7 +39,7 @@ export default function useConnectedReducer (
   })
 
   const state = connectedContext.getNamespaceState(namespace, initialState)
-  const dispatch: Dispatch<any> = (action): void => {
+  const dispatch: Dispatch<ReducerAction<R>> = (action): void => {
     const newState = reducer(state, action)
     if (state !== newState) {
       connectedContext.setNamespaceState(namespace, newState)
