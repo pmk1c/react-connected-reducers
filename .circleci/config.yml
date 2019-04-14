@@ -66,8 +66,9 @@ workflows:
           filters:
                 tags:
                   only: /^v.*/
-                branches:
-                  only: master
+                # TODO: Enable branch filter before merging.
+                # branches:
+                #   only: master
       - publish:
           requires:
             - approve
