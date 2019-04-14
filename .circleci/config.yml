@@ -34,9 +34,40 @@ jobs:
       - install
       - run: npm test
 
+  build:
+    executor: node
+    steps:
+      - install
+      - run: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist
+
+  publish:
+    executor: node
+    steps:
+      - install
+      - run: npm publish
+
 workflows:
   version: 2
-  lint_and_test:
+  lint_test_build_and_publish:
     jobs:
       - lint
       - test
+      - build
+      - approve:
+          type: approval
+          requires:
+            - lint
+            - test
+            - build
+          filters:
+                tags:
+                  only: /^v.*/
+                branches:
+                  only: master
+      - publish:
+          requires:
+            - approve
