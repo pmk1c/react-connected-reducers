@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "node_modules/.bin/tsc",
-    "lint": "node_modules/.bin/eslint ./src/**/*.ts",
+    "lint": "node_modules/.bin/eslint --ext=.ts,.tsx src test",
     "test": "node_modules/.bin/mocha -r ts-node/register --extension ts,tsx --recursive"
   },
   "repository": {

@@ -176,7 +176,6 @@ describe('useConnectedReducer', () => {
 
       expect(ComponentWithStateAndDispatchSpy).to.have.been.called.twice
       expect(UnconnectedComponentSpy).to.have.been.called.once
-
     })
   })
 })
