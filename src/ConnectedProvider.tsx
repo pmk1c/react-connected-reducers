@@ -1,5 +1,6 @@
 import React, {
   ReactElement,
+  ReactNode,
   createContext,
   useState
 } from 'react'
@@ -10,14 +11,14 @@ interface NamespaceStates {
 }
 
 type ConnectedContext = {
-  getNamespaceState: (namespace: Namespace, state: any) => any;
+  getNamespaceState: (namespace: Namespace, initialState: any) => any;
   setNamespaceState: (namespace: Namespace, state: any) => void;
 } | undefined
 
 export const ConnectedContext = createContext<ConnectedContext>(undefined)
 
 interface ConnectedProviderProps {
-  children?: any;
+  children?: ReactNode;
 }
 
 function ConnectedProvider ({ children }: ConnectedProviderProps): ReactElement {
