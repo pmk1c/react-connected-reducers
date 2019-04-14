@@ -4,9 +4,7 @@
 [![Downloads](https://img.shields.io/npm/dm/react-connected-reducers.svg)](https://www.npmjs.com/package/react-connected-reducers)
 [![Build Status](https://circleci.com/gh/pmk1c/react-connected-reducers.svg?style=svg)](https://circleci.com/gh/pmk1c/react-connected-reducers)
 
-`react-connected-reducers` is a library that extends the `useReducer` React Hook to allow for components to share their reducer state with each other. If your are not familiar with React Hooks or the `useReducer` Hook you should take a look at the documentation, which is great. For now this library is more of an experiment, that tries to enable React Developers to connect Components more easily, without having to rely on Redux or other frameworks.
-
-The main difference between this approach and Redux or other Flux libraries is, that there is no shared global application state, but many shared component states. Nevertheless these states can be interconnected by having namespaces for each state and using middlewares to let actions on one reducer dispatch actions on others.
+`react-connected-reducers` extends the `useReducer` Hook to allow for components to share their reducer state with each other. If your are not familiar with Hooks or the `useReducer` Hook you should take a look at their [introduction](https://reactjs.org/docs/hooks-intro.html) and the [documentation for state hooks](https://reactjs.org/docs/hooks-state.html). For now this library is an experiment, that tries to enable React developers to connect components more easily, without having to rely on Redux or other state management frameworks.
 
 # Getting started
 
@@ -68,21 +66,19 @@ function TodoForm () {
   function App () {
     return (
       <ConnectedProvider>
-        <div>
-          <TodoList />
-          <TodoForm />
-        </div>
+        <TodoList />
+        <TodoForm />
       </ConnectedProvider>
     )
   }
 }
 ```
 
-As you can see the `useConnectedReducer` Hook works almost exactly like the `useReducer` Hook, with two main differences:
+This example shows that `useConnectedReducer` works almost exactly like `useReducer`, with two differences:
 
-1. We wrapped all elements in a `ConnectedProvider`. This component provides the state for all of our namespaces. Components using connected reducers need to be ancestors of any `ConnectedProvider`. To debug the state of your namespaces you can find them on this component i.e. using React Dev Tools.
+1. `useConnectedReducer` takes three arguments instead of two. The first one is the namespace. This can either be a `string` or a `string[]`. This namespace has to be unique through your whole application.
 
-1. `useConnectedReducer` takes three arguments. The first one is the namespace. This can either be a `string` or a `string[]`. This namespace has to be unique through your whole application.
+1. We wrapped all elements in a `ConnectedProvider`. This component provides the state for all of our namespaces. Components using connected reducers need to be ancestors (not direct children) of a `ConnectedProvider`. To debug the state of your namespaces you can find them in this component i.e. using React Dev Tools.
 
 That's all. Your are now ready to connect your components at ease!
 
@@ -92,11 +88,28 @@ That's all. Your are now ready to connect your components at ease!
 
 ### Parameters
 
-- `namespace : string | string[]` – Namespace for this reducer, unique through your whole application.
-- `reducer : (state, action) => state` – Function that takes a state and an action and returns a new state.
-- `initialState : state` – The inital state for the reducer.
+> `namespace : string | string[]`
+>
+> Namespace for this reducer, unique through your whole application.
+
+> `reducer : (state, action) => state`
+>
+> Function that takes a state and an action and returns a new state.
+
+> `initialState : state`
+>
+>  The inital state for the reducer.
 
 ### Returns
 
-- `state : state` – The current state of the reducer.
-- `dispatch : action => void` – Use this function to run an action through this reducer.
+> `state : state`
+>
+> The current state of the reducer.
+
+> `dispatch : action => void`
+>
+> Use this function to run an action through this reducer.
+
+# Alternatives
+
+* [Hookleton](https://github.com/bySabi/hookleton) takes a more generalistic approach by providing a way to create hooks and store their logic and return values in memory to share it between components.
