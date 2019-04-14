@@ -1,6 +1,6 @@
 import { Namespace } from '.'
 
-type RevisionBumper = () => void
+export type RevisionBumper = () => void
 
 interface RevisionBumpers {
   [key: string]: RevisionBumper[];
@@ -26,16 +26,16 @@ export function removeBumper (namespace: Namespace, bump: RevisionBumper): void 
   setNamespaceBumpers(namespace, namespaceBumpers.filter(b => b !== bump))
 }
 
-export function hasBumper (namespace: Namespace, bumper: RevisionBumper): boolean {
-  return getNamespaceBumpers(namespace).includes(bumper)
-}
-
 export function bumpNamespace (namespace: Namespace): void {
   getNamespaceBumpers(namespace).forEach((bump: RevisionBumper) => bump())
 }
 
-export function resetBumpers (): void {
-  Object.keys(revisionBumpers).forEach(key => {
-    delete revisionBumpers[key]
-  })
+// NOTE: These are only used for testing.
+
+export function __getRevisionBumpers (): RevisionBumpers {
+  return revisionBumpers
+}
+
+export function __resetRevisionBumpers (): void {
+  Object.keys(revisionBumpers).forEach(k => delete revisionBumpers[k])
 }

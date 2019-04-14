@@ -1,49 +1,49 @@
 import {
   Dispatch,
-  buildDispatch
-} from './buildDispatch'
-import {
   Reducer,
+  useCallback,
+  useContext,
   useEffect,
   useState
 } from 'react'
 import {
+  RevisionBumper,
   addBumper,
-  hasBumper,
+  bumpNamespace,
   removeBumper
 } from './revisionBumpers'
-import {
-  getNamespaceState,
-  hasNamespaceState,
-  setNamespaceState
-} from './states'
+import { ConnectedContext } from './ConnectedProvider'
 import { Namespace } from '.'
-
-function initializeNamespaceState (namespace: Namespace, initialState: any): void {
-  if (!hasNamespaceState(namespace)) {
-    setNamespaceState(namespace, initialState)
-  }
-}
-
-function useRevisionBumper (namespace: Namespace): void {
-  const [revision, setRevision] = useState(0)
-  const revisionBumper = (): void => setRevision(revision + 1)
-
-  if (!hasBumper(namespace, revisionBumper)) {
-    addBumper(namespace, revisionBumper)
-  }
-  useEffect(() => {
-    return () => removeBumper(namespace, revisionBumper)
-  })
-}
 
 export default function useConnectedReducer (
   namespace: Namespace,
   reducer: Reducer<any, any>,
   initialState: any
-): [any, Dispatch] {
-  initializeNamespaceState(namespace, initialState)
-  useRevisionBumper(namespace)
+): [any, Dispatch<any>] {
+  const connectedContext = useContext(ConnectedContext)
 
-  return [getNamespaceState(namespace), buildDispatch(namespace, reducer)]
+  if (!connectedContext) {
+    throw new Error(`
+      ConnectedProvider could not be found. You probably tried to use a connected reducer on an element that is not an
+      ancestor of a ConnectedProvider. This is not supported anymore.
+    `)
+  }
+
+  const [revision, setRevision] = useState(0)
+  const bumper = useCallback<RevisionBumper>(() => setRevision(revision + 1), [revision])
+  useEffect(() => {
+    addBumper(namespace, bumper)
+    return () => removeBumper(namespace, bumper)
+  })
+
+  const state = connectedContext.getNamespaceState(namespace, initialState)
+  const dispatch: Dispatch<any> = (action): void => {
+    const newState = reducer(state, action)
+    if (state !== newState) {
+      connectedContext.setNamespaceState(namespace, newState)
+      bumpNamespace(namespace)
+    }
+  }
+
+  return [state, dispatch]
 }

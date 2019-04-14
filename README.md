@@ -18,47 +18,9 @@ $ npm install --save react-connected-reducers
 
 ## Usage Example
 
-Let's say we want to do a simple todo list with React, when using the `useReducer` Hook, our TodoList implementation might look something like this:
-
 ```javascript
-function TodoList () {
-  const [todos, dispatch] = useReducer((state, action) => {
-    const { type, payload } = action;
+import { ConnectedProvider, useConnectedReducer } from 'react-connected-reducer'
 
-    if (type === 'add') {
-      return [...state, payload]
-    }
-
-    return state;
-  }, [])
-
-  let todoEl = useRef()
-
-  const addTodo = () => {
-    if (todoEl.current) {
-      dispatch({ type: 'add', payload: todoEl.current.value })
-      todoEl.current.value = ''
-    }
-  }
-
-  return (
-    <ul>
-      {todos.map(todo => (
-        <li>{todo}</li>
-      ))}
-    </ul>
-    <form onSubmit={addTodo}>
-      <input ref={todoEl} type="text" />
-      <button type="submit">Add todo</button>
-    </form>
-  )
-}
-```
-
-We could of course split this big component into smaller ones, but we always needed one component at the top of the component tree, that carries the todo items and passes it on to its children. A problem being solved by Flux architecture.
-Now let's look at how we can rewrite this by using the `useConnectedReducer` Hook, this library provides.
-
-```javascript
 function useTodosReducer () {
   return useConnectedReducer('todos', (state, action) => {
     const { type, payload } = action;
@@ -88,7 +50,8 @@ function TodoForm () {
 
   let todoEl = useRef(null)
 
-  const addTodo = () => {
+  const addTodo = e => {
+    e.preventDefault()
     if (todoEl.current) {
       dispatch({ type: 'add', payload: todoEl.current.value })
       todoEl.current.value = ''
@@ -101,20 +64,31 @@ function TodoForm () {
       <button type="submit">Add todo</button>
     </form>
   )
+
+  function App () {
+    return (
+      <ConnectedProvider>
+        <div>
+          <TodoList />
+          <TodoForm />
+        </div>
+      </ConnectedProvider>
+    )
+  }
 }
 ```
 
 As you can see the `useConnectedReducer` Hook works almost exactly like the `useReducer` Hook, with two main differences:
 
-1. `useConnectedReducer` takes three arguments. The first one is the namespace. This can either be a `string` or a `string[]`. This namespace has to be unique through your whole application, so it might be a good idea to put these as constants into their own file when your are adding many connected reducers.
+1. We wrapped all elements in a `ConnectedProvider`. This component provides the state for all of our namespaces. Components using connected reducers need to be ancestors of any `ConnectedProvider`. To debug the state of your namespaces you can find them on this component i.e. using React Dev Tools.
 
-1. We defined our own connected reducer Hook `useTodoReduer`. This is necessary to be able to share the same reducer with different components.
+1. `useConnectedReducer` takes three arguments. The first one is the namespace. This can either be a `string` or a `string[]`. This namespace has to be unique through your whole application.
 
 That's all. Your are now ready to connect your components at ease!
 
 # API
 
-## `useConnectedReducer(namespace, reducer, initialState) : [state, dispatch]`
+## useConnectedReducer(namespace, reducer, initialState) : [state, dispatch]
 
 ### Parameters
 

@@ -5,6 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Changed
+- **BREAKING**: States are now stored in a provider component. Every component that wants to use connected reducers has to be an ancestor of this `ConnectedProvider`. This provides an easy way to debug connected states via React Dev Tools.
 
 ## [0.2.0] - 2019-03-25
 ### Changed
