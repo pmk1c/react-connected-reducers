@@ -12,7 +12,7 @@ import React, {
 import {
   __getRevisionBumpers,
   __resetRevisionBumpers
-} from '../src/revisionBumpers';
+} from '../src/revisionBumpers'
 import {
   expect,
   spy
