@@ -34,9 +34,52 @@ jobs:
       - install
       - run: npm test
 
+  build:
+    executor: node
+    steps:
+      - install
+      - run: npm run build
+
+  publish:
+    executor: node
+    steps:
+      - install
+      - run: npm run build
+      - run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: npm publish
+
 workflows:
   version: 2
-  lint_and_test:
+  lint_test_build_and_publish:
     jobs:
-      - lint
-      - test
+      - lint:
+          filters:
+            tags:
+              only: /.*/
+      - test:
+          filters:
+            tags:
+              only: /.*/
+      - build:
+          filters:
+            tags:
+              only: /.*/
+      - approve:
+          type: approval
+          requires:
+            - lint
+            - test
+            - build
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+      - publish:
+          requires:
+            - approve
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
