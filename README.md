@@ -76,7 +76,7 @@ function TodoForm () {
 
 This example shows that `useConnectedReducer` works almost exactly like `useReducer`, with two differences:
 
-1. `useConnectedReducer` takes three arguments instead of two. The first one is the namespace. This can either be a `string` or a `string[]`. This namespace has to be unique through your whole application.
+1. `useConnectedReducer` takes three arguments instead of two. The first one is the namespace, which is just a string. This namespace has to be unique through your whole application.
 
 1. We wrapped all elements in a `ConnectedProvider`. This component provides the state for all of our namespaces. Components using connected reducers need to be ancestors (not direct children) of a `ConnectedProvider`. To debug the state of your namespaces you can find them in this component i.e. using React Dev Tools.
 
@@ -88,7 +88,7 @@ That's all. Your are now ready to connect your components at ease!
 
 ### Parameters
 
-> `namespace : string | string[]`
+> `namespace : string`
 >
 > Namespace for this reducer, unique through your whole application.
 

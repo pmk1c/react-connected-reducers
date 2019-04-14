@@ -9,11 +9,11 @@ interface RevisionBumpers {
 const revisionBumpers: RevisionBumpers = {}
 
 function getNamespaceBumpers (namespace: Namespace): RevisionBumper[] {
-  return revisionBumpers[namespace.toString()] || []
+  return revisionBumpers[namespace] || []
 }
 
 function setNamespaceBumpers (namespace: Namespace, namespaceBumpers: RevisionBumper[]): void {
-  revisionBumpers[namespace.toString()] = namespaceBumpers
+  revisionBumpers[namespace] = namespaceBumpers
 }
 
 export function addBumper (namespace: Namespace, bumper: RevisionBumper): void {
