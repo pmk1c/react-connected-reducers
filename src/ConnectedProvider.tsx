@@ -33,23 +33,21 @@ function ConnectedProvider ({ children }: ConnectedProviderProps): ReactElement 
   }
 
   connectedContext.getNamespaceState = (namespace: Namespace, initialState: any) => {
-    const ns = namespace.toString()
-    if (namespaceStates.hasOwnProperty(ns)) {
-      return namespaceStates[ns]
+    if (namespaceStates.hasOwnProperty(namespace)) {
+      return namespaceStates[namespace]
     } else {
       return initialState
     }
   }
 
   connectedContext.setNamespaceState = (namespace: Namespace, state: any) => {
-    const ns = namespace.toString()
-    if (state === namespaceStates[ns]) {
+    if (state === namespaceStates[namespace]) {
       return
     }
 
     setNamespaceStates({
       ...namespaceStates,
-      [ns]: state
+      [namespace]: state
     })
   }
 
