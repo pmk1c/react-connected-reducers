@@ -52,9 +52,18 @@ workflows:
   version: 2
   lint_test_build_and_publish:
     jobs:
-      - lint
-      - test
-      - build
+      - lint:
+          filters:
+            tags:
+              only: /.*/
+      - test:
+          filters:
+            tags:
+              only: /.*/
+      - build:
+          filters:
+            tags:
+              only: /.*/
       - approve:
           type: approval
           requires:
@@ -62,11 +71,15 @@ workflows:
             - test
             - build
           filters:
-                tags:
-                  only: /^v.*/
-                # TODO: Enable branch filter before merging.
-                # branches:
-                #   only: master
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
       - publish:
           requires:
             - approve
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
