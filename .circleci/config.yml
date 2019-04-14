@@ -39,15 +39,12 @@ jobs:
     steps:
       - install
       - run: npm run build
-      - persist_to_workspace:
-          root: .
-          paths:
-            - dist
 
   publish:
     executor: node
     steps:
       - install
+      - run: npm run build
       - run: npm publish
 
 workflows:
